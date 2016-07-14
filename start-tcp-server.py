@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import sys
 import SocketServer
+import timeit
 from search_books.search_books import *
 
 
@@ -28,9 +28,12 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
         most n most common words in the books
         """
         ans = []
+        start = timeit.default_timer()
         word_occurrence_tuple = most_common_words('books', int(args[0]))
         for element in word_occurrence_tuple:
             ans.append(element[0] + "-" + str(element[1]))
+        stop = timeit.default_timer()
+        print "common command took " + str(stop - start)
         return '\n'.join(ans)
 
     def search_cmd(self, *args):
@@ -38,9 +41,12 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
         Should return a a string with the documents the
         word appears into"""
         ans = []
+        start = timeit.default_timer()
         book_occurrence = search_word_in_books('books', str(args[0]))
         for element in book_occurrence:
             ans.append(element[0] + "-" + str(element[1]))
+        stop = timeit.default_timer()
+        print "search command took " + str(stop - start)
         return '\n'.join(ans)
 
 

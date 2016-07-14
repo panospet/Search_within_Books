@@ -9,7 +9,7 @@ BOOKS_PATH = '../books/'
 
 def list_all_files(path):
     files = os.listdir(path)
-    return files[:14]
+    return files
 
 
 def split_file_to_words(path, file_title):
