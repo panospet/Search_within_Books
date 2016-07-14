@@ -28,12 +28,9 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
         most n most common words in the books
         """
         ans = []
-        start = timeit.default_timer()
-        word_occurrence_tuple = most_common_words('books', int(args[0]))
-        for element in word_occurrence_tuple:
-            ans.append(element[0] + "-" + str(element[1]))
-        stop = timeit.default_timer()
-        print "common command took " + str(stop - start)
+        result = most_common_words('books/', int(args[0]))
+        for word, occurrence in result:
+            ans.append(word + " " + str(occurrence))
         return '\n'.join(ans)
 
     def search_cmd(self, *args):
@@ -41,14 +38,10 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
         Should return a a string with the documents the
         word appears into"""
         ans = []
-        start = timeit.default_timer()
-        book_occurrence = search_word_in_books('books', str(args[0]))
-        for element in book_occurrence:
-            ans.append(element[0] + "-" + str(element[1]))
-        stop = timeit.default_timer()
-        print "search command took " + str(stop - start)
+        result = search_word_in_books('books/', str(args[0]))
+        for book, occurrence in result:
+            ans.append(book + " " + str(occurrence))
         return '\n'.join(ans)
-
 
 if __name__ == "__main__":
     HOST, PORT = "0.0.0.0", 9999

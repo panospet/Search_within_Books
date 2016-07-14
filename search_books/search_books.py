@@ -1,24 +1,15 @@
 # -*- coding: utf-8 -*-
 
+import operator
 import os
 import string
+import timeit
 from collections import Counter
-
-BOOKS_PATH = '../books/'
 
 
 def list_all_files(path):
     files = os.listdir(path)
     return files
-
-
-def split_file_to_words(path, file_title):
-    words = []
-    with open(os.path.join(path, file_title)) as f:
-        for line in f:
-            for word in remove_numbers_and_punctuation(line).split():
-                words.append(word)
-    return words
 
 
 def remove_numbers_and_punctuation(str):
@@ -28,37 +19,60 @@ def remove_numbers_and_punctuation(str):
     fast, according to this link:
     http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
     """
-    # stripped = (c for c in str if 0 < ord(c) < 127)
-    # str = ''.join(stripped)
-    str = str.decode('unicode_escape').encode('ascii', 'ignore')
+    clean_str = str.decode('unicode_escape').encode('ascii', 'ignore')
 
     digits_and_punc = string.digits + string.punctuation
-    no_num = str.translate(string.maketrans(digits_and_punc, len(digits_and_punc) * " "))
+    no_num = clean_str.translate(string.maketrans(digits_and_punc, len(digits_and_punc) * " "))
     return no_num
 
 
-def most_common_words(books_path, number):
-    words_list = []
-    for f in list_all_files(books_path):
-        words_list.extend(split_file_to_words(books_path, f))
-    return Counter(words_list).most_common(number)
+def most_common_words(path, number):
+    word_occurrence = {}
+    for file_title in list_all_files(path):
+        with open(os.path.join(path, file_title)) as f:
+            for line in f:
+                for word in remove_numbers_and_punctuation(line).split():
+                    if word in word_occurrence:
+                        word_occurrence[word] += 1
+                    else:
+                        word_occurrence[word] = 1
+    return Counter(word_occurrence).most_common(number)
 
 
-def search_word_in_books(books_path, word):
-    books = []
-    for f in list_all_files(books_path):
-        words_list = split_file_to_words(books_path, f)
-        if word in words_list:
-            books.append((f, words_list.count(word)))
-    books.sort(key=lambda tup: tup[1])
-    books.reverse()
-    return books
+def search_word_in_books(path, word):
+    books_occurrence = {}
+    for file_title in list_all_files(path):
+        with open(os.path.join(path, file_title)) as f:
+            for line in f:
+                for w in remove_numbers_and_punctuation(line).split():
+                    if w == word:
+                        if file_title in books_occurrence:
+                            books_occurrence[file_title] += 1
+                        else:
+                            books_occurrence[file_title] = 1
+    sorted_books_occurrence = sorted(books_occurrence.items(), key=operator.itemgetter(1), reverse=True)
+    return sorted_books_occurrence
 
 
 if __name__ == "__main__":
-    # print search_word_in_books('../books/', 'bedeutet')
+    most_popular = 5
+    start1 = timeit.default_timer()
+    common_words = most_common_words('../books/', most_popular)
+    stop1 = timeit.default_timer()
+    process1_time = stop1 - start1
 
-    word_and_occurrences = search_word_in_books('../books/', 'auf')
-    # word_and_occurrences.reverse()
-    print word_and_occurrences
+    test_word = 'auf'
+    start2 = timeit.default_timer()
+    books_and_occurrence = search_word_in_books('../books/', test_word)
+    stop2 = timeit.default_timer()
+    process2_time = stop2 - start2
 
+    print "The most common words are: "
+    print common_words
+    print
+    print "Books and occurrences of the word 'auf' "
+    print books_and_occurrence
+    print
+    print "First process took " + str(process1_time) + " seconds."
+    print "Second process took " + str(process2_time) + " seconds."
+    print "Total time spent: " + str(process1_time + process2_time)
