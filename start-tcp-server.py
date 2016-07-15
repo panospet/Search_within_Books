@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import SocketServer
-import timeit
 from search_books.search_books import *
 
 

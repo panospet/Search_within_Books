@@ -31,7 +31,7 @@ def most_common_words(path, number):
     for file_title in list_all_files(path):
         with open(os.path.join(path, file_title)) as f:
             for line in f:
-                for word in remove_numbers_and_punctuation(line).split():
+                for word in remove_numbers_and_punctuation(line).lower().split():
                     if word in word_occurrence:
                         word_occurrence[word] += 1
                     else:
