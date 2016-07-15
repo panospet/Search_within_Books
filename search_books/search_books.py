@@ -5,6 +5,7 @@ import os
 import string
 import timeit
 from collections import Counter
+from pprint import pprint
 
 
 def list_all_files(path):
@@ -15,12 +16,13 @@ def list_all_files(path):
 def remove_numbers_and_punctuation(str):
     """
     Function that returns input string without any numeric or punctuation characters.
-    It is implemented with the 'translate' method, which seems to be more efficient and
+    First of all, we need to remove all 'non-ASCII' characters, because the program considers
+    them as words. Then, we remove punctuation and digits.
+    The second step is implemented with the 'translate' method, which seems to be more efficient and
     fast, according to this link:
     http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
     """
     clean_str = str.decode('unicode_escape').encode('ascii', 'ignore')
-
     digits_and_punc = string.digits + string.punctuation
     no_num = clean_str.translate(string.maketrans(digits_and_punc, len(digits_and_punc) * " "))
     return no_num
@@ -44,7 +46,7 @@ def search_word_in_books(path, word):
     for file_title in list_all_files(path):
         with open(os.path.join(path, file_title)) as f:
             for line in f:
-                for w in remove_numbers_and_punctuation(line).split():
+                for w in remove_numbers_and_punctuation(line).lower().split():
                     if w == word:
                         if file_title in books_occurrence:
                             books_occurrence[file_title] += 1
@@ -55,7 +57,7 @@ def search_word_in_books(path, word):
 
 
 if __name__ == "__main__":
-    most_popular = 5
+    most_popular = 100
     start1 = timeit.default_timer()
     common_words = most_common_words('../books/', most_popular)
     stop1 = timeit.default_timer()
@@ -68,10 +70,10 @@ if __name__ == "__main__":
     process2_time = stop2 - start2
 
     print "The most common words are: "
-    print common_words
+    pprint(common_words)
     print
     print "Books and occurrences of the word 'auf' "
-    print books_and_occurrence
+    pprint(books_and_occurrence)
     print
     print "First process took " + str(process1_time) + " seconds."
     print "Second process took " + str(process2_time) + " seconds."
