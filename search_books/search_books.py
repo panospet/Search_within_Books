@@ -8,11 +8,6 @@ from collections import Counter
 from pprint import pprint
 
 
-def list_all_files(path):
-    files = os.listdir(path)
-    return files
-
-
 def remove_numbers_and_punctuation(str):
     """
     Function that returns input string without any numeric or punctuation characters.
@@ -28,52 +23,51 @@ def remove_numbers_and_punctuation(str):
     return no_num
 
 
-def most_common_words(path, number):
-    word_occurrence = {}
-    for file_title in list_all_files(path):
+def store_data(path):
+    data_structure = {}
+    for file_title in os.listdir(path):
         with open(os.path.join(path, file_title)) as f:
-            for line in f:
-                for word in remove_numbers_and_punctuation(line).lower().split():
-                    if word in word_occurrence:
-                        word_occurrence[word] += 1
-                    else:
-                        word_occurrence[word] = 1
-    return Counter(word_occurrence).most_common(number)
+            file_list = remove_numbers_and_punctuation(f.read().lower()).split()
+            data_structure[file_title] = Counter(file_list)
+    return data_structure
 
 
-def search_word_in_books(path, word):
+def most_common_words(data, number):
+    common_words = Counter()
+    for book in data:
+        common_words.update(data[book])
+    return common_words.most_common(number)
+
+
+def search_word(data, word):
     books_occurrence = {}
-    for file_title in list_all_files(path):
-        with open(os.path.join(path, file_title)) as f:
-            for line in f:
-                for w in remove_numbers_and_punctuation(line).lower().split():
-                    if w == word:
-                        if file_title in books_occurrence:
-                            books_occurrence[file_title] += 1
-                        else:
-                            books_occurrence[file_title] = 1
+    for book in data:
+        if word in data[book]:
+            books_occurrence[book] = data[book][word]
     sorted_books_occurrence = sorted(books_occurrence.items(), key=operator.itemgetter(1), reverse=True)
     return sorted_books_occurrence
 
 
 if __name__ == "__main__":
-    most_popular = 100
+    data = store_data('../books')
+
+    most_popular = 10
     start1 = timeit.default_timer()
-    common_words = most_common_words('../books/', most_popular)
+    common = most_common_words(data, most_popular)
     stop1 = timeit.default_timer()
     process1_time = stop1 - start1
 
     test_word = 'auf'
     start2 = timeit.default_timer()
-    books_and_occurrence = search_word_in_books('../books/', test_word)
+    books_and_occurrence = search_word(data, test_word)
     stop2 = timeit.default_timer()
     process2_time = stop2 - start2
 
     print "The most common words are: "
-    pprint(common_words)
+    pprint(common)
     print
-    print "Books and occurrences of the word 'auf' "
-    pprint(books_and_occurrence)
+    print "Books and occurrences of the word " + test_word + ":"
+    pprint(books_and_occurrence[:10])
     print
     print "First process took " + str(process1_time) + " seconds."
     print "Second process took " + str(process2_time) + " seconds."
