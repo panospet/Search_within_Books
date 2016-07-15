@@ -1,4 +1,4 @@
-from search_books.search_books import *
+from search_books import *
 import unittest
 
 
@@ -45,10 +45,11 @@ class TestSearchBooks(unittest.TestCase):
         simple = simple_common_words(10)
         self.assertEqual(word_occurrence, simple)
 
-    # def test_search_word_with_simple(self):
-    #     books_and_occurrence = search_word(self.data, self.test_word)
-    #     simple = simple_search_word(self.test_word)
-    #     self.assertEqual(books_and_occurrence, simple)
+    def test_search_word(self):
+        books_and_occurrence = search_word(self.data, self.test_word)
+        simple = simple_search_word(self.test_word)
+        self.assertEqual(len(books_and_occurrence), len(simple))
+        self.assertEqual(books_and_occurrence[20], simple[20])
 
     def test_store_data_has_correct_size(self):
         self.assertEqual(len(self.data), 557)
