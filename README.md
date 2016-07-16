@@ -102,8 +102,8 @@ logged to us by the server.
 
 - Code complexity. It scales with more books. (TODO)
 
-- Concerns about implementation: The structure where our data are stored, is the key for code efficiency. I read that
-python dictionaries are "hashable", which makes iteration a lot easier. They also have the "key - value" structure, 
+- Concerns about implementation: The structure where our data are stored, is the key for code efficiency. Python 
+dictionaries act like hash tables, which makes iteration a lot easier. They also have the "key - value" structure, 
 which is something convenient for our case.
 
 - Limitations. Storing data does approximately 10-11 seconds to run. This is something that definitely needs 
