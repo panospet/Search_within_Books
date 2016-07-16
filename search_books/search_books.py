@@ -28,7 +28,7 @@ def store_data(path):
     Function that returns all data retrieved from the books. Iterates inside
     a given path which contains the list of books, removes digits and
     punctuation and stores the file contents inside a data structure.
-    Return type is a dictionary with books names as keys, and values a
+    Return type is a dictionary with books names as keys, and as values a
     Counter structure for each word and their occurrence inside each book.
     Example of our structure:
     data_structure = {
