@@ -27,7 +27,7 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
         """
         Returns a string with the n most common words inside all books.
         Server will log the words with the format:
-        "word occurences"
+        "word total_occurrences"
         """
         ans = []
         result = most_common_words(self.books_data, int(args[0]))
@@ -39,7 +39,7 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
         """
         Returns a string with all the books a specific word appears
         into. Server will log the results with the format:
-        "book occurence_of_the_word"
+        "book occurrence_of_the_word"
         """
         ans = []
         result = search_word(self.books_data, str(args[0]))
