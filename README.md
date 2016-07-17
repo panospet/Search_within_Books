@@ -100,11 +100,26 @@ as values a `Counter()` structure for each word and their occurrence inside each
 - The two methods, `common` and `search` query the structure above. Both return a list of tuples which later on, is 
 logged to us by the server.
 
-- Code complexity. It scales with more books. (TODO)
-
-- Concerns about implementation: The structure where our data are stored, is the key for code efficiency. Python 
-dictionaries act like hash tables, which makes iteration a lot easier. They also have the "key - value" structure, 
+- Note about implementation: The structure where our data are stored, is the key for code efficiency. Python
+dictionaries act like hash tables, which makes iteration quicker. They also have the "key - value" structure,
 which is something convenient for our case.
 
-- Limitations. Storing data does approximately 10-11 seconds to run. This is something that definitely needs 
-improvement.
+#### Code complexity
+
+Both methods, `common` and `search` do iterate the dictionary which has books as keys. This has a Big O notation
+O(N), which means that it scales linearly, depending on the number of books.
+
+`common` method also updates the dictionary at every iteration with the number of occurences of each word found in
+a book. This means that our complexity increases linearly depending on the number of words that each book has
+inside, and also on the repetition of each word. For example, our code consumes more time for updating the dictionary
+if a book has 10 different words than having the same word repeated 10 times.
+
+`search` method only searches if a word is inside a book (O(1) for a dictionary, assuming that the hash function that python
+uses is close to ideal) and just stores it to another dictionary (also O(1)).
+
+Finally, both methods sort their final results, adding a O(NlogN) complexity to our code.
+
+
+#### Limitations
+
+Storing data does approximately 10-11 seconds to run. This is something that needs improvement.
