@@ -104,7 +104,7 @@ logged to us by the server.
 dictionaries act like hash tables, which makes iteration quicker. They also have the "key - value" structure,
 which is something convenient for our case.
 
-#### Code complexity
+### Code complexity
 
 Both methods, `common` and `search` do iterate the dictionary which has books as keys. This has a Big O notation
 O(N), which means that it scales linearly, depending on the number of books.
@@ -114,11 +114,14 @@ a book. This means that our complexity increases linearly depending on the numbe
 inside, and also on the repetition of each word. For example, our code consumes more time for updating the dictionary
 if a book has 10 different words than having the same word repeated 10 times.
 
-`search` method only searches if a word is inside a book (O(1) for a dictionary, assuming that the hash function that python
+Thus, for the `common` method we have a worst case scenario of O(N*K), where N is the number of books and K the number of
+words inside each book.
+
+`search` method only searches if a word is inside a book (O(1) for a dictionary (assuming that the hash function that python
 uses is close to ideal) and just stores it to another dictionary (also O(1)).
 
-Finally, both methods sort their final results, adding a O(ΚlogN) complexity to our code (when K number of books, N number of
-words inside the dictionary)
+Finally, both methods sort their final results, adding a O(NlogK) complexity to our code (when N number of books, K number of
+words inside a book)
 
 
 #### Limitations
