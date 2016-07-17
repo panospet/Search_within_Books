@@ -127,3 +127,8 @@ words inside a book)
 #### Limitations
 
 Storing data does approximately 10-11 seconds to run. This is something that needs improvement.
+
+
+### Testing 
+
+File tests.py provides some small unit tests, which are also comparing the results of our methods with the more naive, first solution.
