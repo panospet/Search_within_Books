@@ -117,7 +117,8 @@ if a book has 10 different words than having the same word repeated 10 times.
 `search` method only searches if a word is inside a book (O(1) for a dictionary, assuming that the hash function that python
 uses is close to ideal) and just stores it to another dictionary (also O(1)).
 
-Finally, both methods sort their final results, adding a O(NlogN) complexity to our code.
+Finally, both methods sort their final results, adding a O(ΚlogN) complexity to our code (when K number of books, N number of
+words inside the dictionary)
 
 
 #### Limitations
